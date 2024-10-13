@@ -11,7 +11,23 @@ require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors({origin: "https://front-end-two-sandy.vercel.app/",credentials: true}));
+//app.use(cors({origin: "https://front-end-two-sandy.vercel.app/",credentials: true}));
+const allowedIps = ['https://front-end-two-sandy.vercel.app'];
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Verificar si la IP está permitida
+    if (allowedIps.indexOf(origin) !== -1 || !origin) {
+      callback(null, true); 
+    } else {
+      callback(new Error('No permitido por CORS')); 
+    }
+  }
+};
+
+app.use(cors({
+  origin: corsOptions,
+  credentials: true
+}));
 
 app.use(express.json());
 app.use(cookieParser());
