@@ -20,3 +20,4 @@ const Proceso = sequelize.define('proceso', {
 });
 
 module.exports = Proceso;
+//hola
