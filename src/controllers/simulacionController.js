@@ -1,6 +1,6 @@
-const Simulacion = require('../models/simulacion');
-const Usuario = require('../models/usuario');
-const Proceso = require('../models/proceso');
+const Simulacion = require('../models/Simulacion');
+const Usuario = require('../models/Usuario');
+const Proceso = require('../models/Proceso');
 
 const Fallo = require('../models/fallo'); // Asegúrate de importar el modelo de Fallo
 

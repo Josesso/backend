@@ -1,8 +1,8 @@
 const { faker } = require('@faker-js/faker');
 const bcrypt = require('bcrypt');
-const Usuario = require('../models/usuario');
-const Proceso = require('../models/proceso');
-const Simulacion = require('../models/simulacion');
+const Usuario = require('../models/Usuario');
+const Proceso = require('../models/Proceso');
+const Simulacion = require('../models/Simulacion');
 
 async function seedDatabase() {
   try {
