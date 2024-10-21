@@ -1,4 +1,4 @@
-const Proceso = require('../models/Proceso');
+const Proceso = require('../models/proceso');
 
 exports.createProceso = async (req, res) => {
   try {

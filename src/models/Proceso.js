@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Proceso = sequelize.define('Proceso', {
+const Proceso = sequelize.define('proceso', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -15,6 +15,8 @@ const Proceso = sequelize.define('Proceso', {
     type: DataTypes.INTEGER,
     allowNull: true
   }
+}, {
+  freezeTableName: true, // No pluralizar el nombre de la tabla
 });
 
 module.exports = Proceso;

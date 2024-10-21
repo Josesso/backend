@@ -1,16 +1,37 @@
-const Simulacion = require('../models/Simulacion');
-const Usuario = require('../models/Usuario');
-const Proceso = require('../models/Proceso');
+const Simulacion = require('../models/simulacion');
+const Usuario = require('../models/usuario');
+const Proceso = require('../models/proceso');
+
+const Fallo = require('../models/fallo'); // Asegúrate de importar el modelo de Fallo
 
 exports.createSimulacion = async (req, res) => {
   try {
-    console.log(req.body);
-    const { UsuarioId, ProcesoId, calificacion,Tiempo,medicina } = req.body;
-    const newSimulacion = await Simulacion.create({ UsuarioId, ProcesoId, calificacion,Tiempo,medicina });
-    res.status(201).json(newSimulacion);
+    // Desestructurar los datos recibidos
+    const { UsuarioId, ProcesoId, calificacion, Tiempo, medicina, fallos } = req.body;
+    
+    // Crear la simulación primero
+    const newSimulacion = await Simulacion.create({ usuarioId: UsuarioId, procesoId: ProcesoId, calificacion, Tiempo, medicina });
+
+    // Procesar la cadena de fallos
+    let fallosArray = fallos.split(','); // Separar la cadena de fallos por comas
+    fallosArray = fallosArray.map(f => f.trim()); // Eliminar los espacios extra alrededor de cada fallo
+    fallosArray = fallosArray.filter(f => f !== ''); // Filtrar los fallos vacíos
+    fallosArray = [...new Set(fallosArray)]; // Eliminar duplicados
+    
+    // Crear un registro de Fallo para cada elemento en fallosArray
+    console.log(fallosArray);
+    for (const falloDescripcion of fallosArray) {
+      await Fallo.create({
+        descripcion: falloDescripcion,
+        simulacionId: newSimulacion.id // Asociar cada fallo con la simulación recién creada
+      });
+    }
+    
+    // Devolver la simulación creada junto con los fallos
+    res.status(201).json({ simulacion: newSimulacion, fallos: fallosArray });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al crear simulación' });
+    res.status(500).json({ error: 'Error al crear simulación y fallos' });
   }
 };
 

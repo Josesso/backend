@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
-const Usuario = sequelize.define('Usuario', {
+const Usuario = sequelize.define('usuario', {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -20,6 +20,8 @@ const Usuario = sequelize.define('Usuario', {
     type: DataTypes.STRING,
     allowNull: false
   }
+}, {
+  freezeTableName: true, // No pluralizar el nombre de la tabla
 });
 
 module.exports = Usuario;
