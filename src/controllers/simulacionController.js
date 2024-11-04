@@ -1,6 +1,7 @@
 const Simulacion = require('../models/Simulacion');
 const Usuario = require('../models/Usuario');
 const Proceso = require('../models/Proceso');
+const Acciones= require('../models/Acciones')
 
 const Fallo = require('../models/fallo'); // Asegúrate de importar el modelo de Fallo
 
@@ -8,6 +9,7 @@ exports.createSimulacion = async (req, res) => {
   try {
     // Desestructurar los datos recibidos
     const { UsuarioId, ProcesoId, calificacion, Tiempo, medicina, fallos, acciones } = req.body;
+    console.log(req.body);
     
     // Crear la simulación primero
     const newSimulacion = await Simulacion.create({ usuarioId: UsuarioId, procesoId: ProcesoId, calificacion, Tiempo, medicina });
