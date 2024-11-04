@@ -7,7 +7,7 @@ const Fallo = require('../models/fallo'); // Asegúrate de importar el modelo de
 exports.createSimulacion = async (req, res) => {
   try {
     // Desestructurar los datos recibidos
-    const { UsuarioId, ProcesoId, calificacion, Tiempo, medicina, fallos } = req.body;
+    const { UsuarioId, ProcesoId, calificacion, Tiempo, medicina, fallos, acciones } = req.body;
     
     // Crear la simulación primero
     const newSimulacion = await Simulacion.create({ usuarioId: UsuarioId, procesoId: ProcesoId, calificacion, Tiempo, medicina });
@@ -19,21 +19,36 @@ exports.createSimulacion = async (req, res) => {
     fallosArray = [...new Set(fallosArray)]; // Eliminar duplicados
     
     // Crear un registro de Fallo para cada elemento en fallosArray
-    console.log(fallosArray);
     for (const falloDescripcion of fallosArray) {
       await Fallo.create({
         descripcion: falloDescripcion,
         simulacionId: newSimulacion.id // Asociar cada fallo con la simulación recién creada
       });
     }
+
+    // Procesar la cadena de acciones
+    let accionesArray = acciones.replace(/^,\s*/, ''); // Eliminar la coma y el espacio inicial si existen
+    accionesArray = accionesArray.split(','); // Separar la cadena de acciones por comas
+    accionesArray = accionesArray.map(a => a.trim()); // Eliminar los espacios extra alrededor de cada acción
+    accionesArray = accionesArray.filter(a => a !== ''); // Filtrar las acciones vacías
+    accionesArray = [...new Set(accionesArray)]; // Eliminar duplicados
+
+    // Crear un registro de Accion para cada elemento en accionesArray
+    for (const accionDescripcion of accionesArray) {
+      await Acciones.create({
+        descripcion: accionDescripcion,
+        simulacionId: newSimulacion.id // Asociar cada acción con la simulación recién creada
+      });
+    }
     
-    // Devolver la simulación creada junto con los fallos
-    res.status(201).json({ simulacion: newSimulacion, fallos: fallosArray });
+    // Devolver la simulación creada junto con los fallos y acciones
+    res.status(201).json({ simulacion: newSimulacion, fallos: fallosArray, acciones: accionesArray });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Error al crear simulación y fallos' });
+    res.status(500).json({ error: 'Error al crear simulación, fallos y acciones' });
   }
 };
+
 
 exports.getSimulaciones = async (req, res) => {
   try {

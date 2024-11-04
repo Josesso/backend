@@ -7,6 +7,7 @@ const procesoRoutes = require('./routes/procesoRoutes');
 const simulacionRoutes = require('./routes/simulacionRoutes');
 const fallosRoutes = require('./routes/falloRoutes')
 const Fallo = require('./models/fallo');
+const Acciones=require('./models/Acciones');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
