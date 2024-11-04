@@ -5,10 +5,12 @@ const sequelize = require('./config/database');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const procesoRoutes = require('./routes/procesoRoutes');
 const simulacionRoutes = require('./routes/simulacionRoutes');
-const fallosRoutes = require('./routes/falloRoutes')
+const fallosRoutes = require('./routes/falloRoutes');
+const accionesRoutes=require('./routes/accionesRoutes');
 const Fallo = require('./models/fallo');
 const Acciones=require('./models/Acciones');
 const cookieParser = require('cookie-parser');
+const acciones = require('./models/Acciones');
 require('dotenv').config();
 
 const app = express();
@@ -38,7 +40,8 @@ app.use(cookieParser());
 app.use('/usuarios', usuarioRoutes);
 app.use('/procesos', procesoRoutes);
 app.use('/simulaciones', simulacionRoutes);
-app.use('/fallos', fallosRoutes)
+app.use('/fallos', fallosRoutes),
+app.use('/acciones',accionesRoutes),
 /*// Middleware para verificar JWT
 const authenticateJWT = (req, res, next) => {
   const token = req.cookies.jwt;
